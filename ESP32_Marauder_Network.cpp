@@ -1,4 +1,5 @@
 #include "ESP32_Marauder_Headless.h"
+#include "web_content.h"
 
 extern AsyncWebServer server;
 extern AsyncWebSocket ws;
@@ -37,18 +38,20 @@ void setupWebServer() {
   
   // Route for root / web page
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(SPIFFS, "/index.html", "text/html");
+    // Sends your index_html string from web_content.h
+    request->send(200, "text/html", index_html);
   });
   
-  // Route for style.css
+  // Since style and script are now inside index_html, we send 
+  // empty responses or redirect to / to prevent "404 Not Found" errors.
   server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(SPIFFS, "/style.css", "text/css");
+    request->send(200, "text/css", ""); 
   });
   
-  // Route for script.js
   server.on("/script.js", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(SPIFFS, "/script.js", "application/javascript");
+    request->send(200, "application/javascript", "");
   });
+}
   
   // API endpoints
   server.on("/api/scan", HTTP_GET, [](AsyncWebServerRequest *request){
