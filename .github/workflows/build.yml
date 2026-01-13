@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Compile ESP32 Bin
         uses: ArminJo/arduino-test-compile@v3
@@ -16,7 +16,7 @@ jobs:
           sketch-names: "ESP32_Marauder_Headless.ino"
 
       - name: Upload Binary
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: marauder-firmware
           path: "**/*.bin"
