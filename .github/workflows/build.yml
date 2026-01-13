@@ -1,0 +1,22 @@
+name: Build Marauder
+on: [push]
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Compile ESP32 Bin
+        uses: ArminJo/arduino-test-compile@v3
+        with:
+          arduino-board-fqbn: esp32:esp32:esp32:PartitionScheme=min_spiffs
+          platform-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+          required-libraries: ESPAsyncWebServer,AsyncTCP,ArduinoJson,LinkedList,NimBLE-Arduino
+          sketch-names: "ESP32_Marauder_Headless.ino"
+
+      - name: Upload Binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: marauder-firmware
+          path: "**/*.bin"
